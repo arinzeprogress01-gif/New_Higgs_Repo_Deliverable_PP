@@ -122,11 +122,7 @@ Marks order as paid
 
 Clears cart
 
-⚠️ Edge Cases You Handled
-
-This is VERY important for grading.
-
-Include this in documentation:
+⚠️ Edge Cases i Handled
 
 Prevent adding quantity above stock
 
@@ -154,9 +150,7 @@ No timeout for pending orders
 
 Admin manually manages stock
 
-📈 Scalability Thoughts (Very Important Section)
-
-Even if not implemented, you mention:
+📈 Scalability Thoughts
 
 Replace simulated payment with Stripe/Paystack
 
@@ -171,37 +165,3 @@ Add role-based authentication (admin vs user)
 Use PostgreSQL in production
 
 Add transaction-level DB locking for high concurrency
-
-This shows maturity.
-
-🗂 Optional Data Modeling (ERD Explanation)
-
-Tables and relationships:
-
-User
-
-has many Orders
-
-has one Cart
-
-Cart
-
-has many CartItems
-
-Order
-
-has many OrderItems
-
-has one Payment
-
-Food
-
-referenced by CartItem and OrderItem
-
-Payment
-
-belongs to Order
-
-belongs to User
-
-That’s your ERD explanation in words.
