@@ -1,0 +1,207 @@
+Create Order
+OST /order/create
+Reads cart
+Validates stock
+Reserves stock (reduces stock temporarily)
+Copies cart → Order + OrderItems
+Sets status = "pending"
+
+2️⃣ Confirm Payment
+POST /order/confirm/{order_id}
+Changes status → "paid"
+Stock remains reduced permanently
+
+3️⃣ Cancel Order
+POST /order/cancel/{order_id}
+Changes status → "cancelled"
+Restores stock
+This covers:
+
+✔ Order cancelled
+✔ Payment incomplete logic
+✔ Stock restoration
+✔ Proper state transitions
+
+
+
+Here’s how order status should behave:
+
+Current Status	Can Go To	Cannot Go To
+pending	paid	paid twice
+pending	cancelled	cancelled twice
+paid	(none)	cancelled
+cancelled	(none)	paid
+
+
+📄 SYSTEM OVERVIEW (For Your Documentation)
+
+Here’s a clean version you can use:
+
+🏗 System Overview – Chuks Kitchen Backend
+
+Chuks Kitchen is a food ordering backend system that manages:
+
+User registration
+
+Food listing
+
+Cart operations
+
+Order processing
+
+Payment simulation
+
+Stock management
+
+The system is built using:
+
+FastAPI
+
+SQLAlchemy
+
+SQLite (or your DB)
+
+RESTful architecture
+
+🔄 Core Flows
+1. Registration Flow
+
+User registers → Account created → Can place orders.
+
+2. Food Management Flow (Admin)
+
+Admin:
+
+Add food
+
+Update price
+
+Update stock
+
+Delete food
+
+3. Cart Flow
+
+User:
+
+Add food to cart
+
+Update quantity
+
+Remove item
+
+Clear cart
+
+Stock not affected at this stage.
+
+4. Ordering Flow
+
+User:
+
+Converts cart → Order
+
+Order status = pending
+
+Total calculated and stored
+
+5. Payment Flow
+
+User:
+
+Pays for pending order
+
+System:
+
+Validates stock
+
+Reduces stock permanently
+
+Creates payment record
+
+Marks order as paid
+
+Clears cart
+
+⚠️ Edge Cases You Handled
+
+This is VERY important for grading.
+
+Include this in documentation:
+
+Prevent adding quantity above stock
+
+Prevent reducing cart below 1
+
+Prevent double payment
+
+Prevent paying non-existent order
+
+Prevent paying another user’s order
+
+Revalidate stock at payment time
+
+Prevent stock race issues (basic level)
+
+🧠 Assumptions
+
+You should document:
+
+Payment is simulated (no external gateway)
+
+Orders are instantly paid (no cancellation stage)
+
+No timeout for pending orders
+
+Admin manually manages stock
+
+📈 Scalability Thoughts (Very Important Section)
+
+Even if not implemented, you mention:
+
+Replace simulated payment with Stripe/Paystack
+
+Add background tasks for email notifications
+
+Add order expiration timer
+
+Add Redis for caching food list
+
+Add role-based authentication (admin vs user)
+
+Use PostgreSQL in production
+
+Add transaction-level DB locking for high concurrency
+
+This shows maturity.
+
+🗂 Optional Data Modeling (ERD Explanation)
+
+Tables and relationships:
+
+User
+
+has many Orders
+
+has one Cart
+
+Cart
+
+has many CartItems
+
+Order
+
+has many OrderItems
+
+has one Payment
+
+Food
+
+referenced by CartItem and OrderItem
+
+Payment
+
+belongs to Order
+
+belongs to User
+
+That’s your ERD explanation in words.
