@@ -6,4 +6,4 @@ db = SessionLocal()
 users = db.query(models.User).all()
 
 for user in users:
-    print(user.id, user.email, user.password)
+    print(user.id, user.email)
