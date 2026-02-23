@@ -1,5 +1,202 @@
 https://github.com/arinzeprogress01-gif/New_Higgs_Repo_Deliverable_PP.git
 
+
+(This was done on a word pad as Ms Word is not functional on my windows and its also an Ai aided
+diagram)
+
+MAIN SYSTEM ENTRY
+[START]
+↓
+User opens application
+↓
+Is user registered?
+├── NO → Go to Registration Flow
+└── YES → Go to Login Flow
+
+REGISTRATION FLOW
+Sign in
+Enter email + password
+↓
+Validate input?
+├── NO → Return validation error → END
+└── YES
+↓
+Does email already exist?
+├── YES → Return "User already exists" → END
+└── NO
+↓
+Hash password and send otp
+↓
+
+Create user in database
+↓
+Return success response
+↓
+END
+
+LOGIN FLOW
+Enter credentials
+↓
+User exists?
+├── NO → Return error → END
+└── YES
+↓
+Verify password?
+├── NO → Return error → END
+└── YES
+↓
+Login Sucessful
+↓
+Go to User Dashboard
+
+FOOD VIEW FLOW
+User requests /foods
+↓
+Fetch all foods from database
+↓
+
+Return food list
+↓
+User selects food
+
+CART FLOW
+User clicks "Add to Cart"
+↓
+Food exists?
+├── NO → Return 404 → END
+└── YES
+↓
+Is quantity > available stock?
+├── YES → Return "Insufficient stock" → END
+└── NO
+↓
+Does cart exist?
+├── NO → Create cart
+└── YES → Continue
+↓
+Food already in cart?
+├── YES → Update quantity
+└── NO → Create cart item
+↓
+Return updated cart
+
+CART UPDATE LOOP
+User updates quantity
+
+↓
+Is quantity < 1?
+├── YES → Remove item from cart
+└── NO
+↓
+Is quantity > stock?
+├── YES → Return error
+└── NO → Update cart item
+
+ORDER CREATION FLOW
+User clicks "Checkout"
+↓
+Is cart empty?
+├── YES → Return error → END
+└── NO
+↓
+Loop through each cart item
+↓
+Calculate subtotal = price × quantity
+↓
+Add to total_amount
+↓
+Create Order (status = "pending")
+↓
+Create OrderItems
+↓
+Return order summary
+
+PAYMENT FLOW LOGIC
+User calls /pay/{order_id}
+↓
+Order exists?
+├── NO → Return 404 → END
+└── YES
+↓
+Is order already paid?
+├── YES → Return "Already paid" → END
+└── NO
+↓
+Loop through each order item
+↓
+Is item.quantity > food.stock?
+├── YES → Return "Out of stock" → STOP
+└── NO → Continue loop
+
+Loop again through order items
+↓
+Reduce food.stock -= item.quantity
+
+Create Payment record
+↓
+Generate transaction_ref (UUID)
+↓
+Mark order.status = "paid"
+↓
+Clear user's cart
+
+↓
+Commit database transaction
+↓
+Return payment receipt
+↓
+END
+
+ADMIN FOOD MANANGEMENT FLOW
+Admin logs in
+↓
+Is user role = admin?
+├── NO → Access denied
+└── YES
+↓
+Choose action:
+├── Add Food
+├── Update Food
+└── Delete Food
+add food:
+Validate input
+↓
+Create food
+↓
+Save to database
+update food :
+Food exists?
+
+├── NO → Return error
+└── YES → Update fields
+delete food :
+Food exists?
+├── NO → Return error
+└── YES → Delete food
+
+ORDER LIFECYCLE STATE DIAGRAM
+CART (temporary)
+↓
+ORDER CREATED (pending)
+↓
+PAYMENT SUCCESS
+↓
+ORDER = paid
+
+REMINDER:
+EDGE CONTROLS INCLUDED
+ Your flowchart already includes:
+ Duplicate user prevention
+ Invalid login handli
+ Stock validation at cart
+ Stock re-validation at payment
+
+ Double payment prevention
+ Cart empty check
+ Order ownership validation
+ Quantity validation loop
+ Role-based admin access
+ That’s strong logic coverage.
 Create Order
 OST /order/create
 Reads cart
